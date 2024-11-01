@@ -2,29 +2,17 @@ const express = require('express');
 const { createPostController,editPostController,getPosts, getAllPosts,increaseVote,decreaseVote } = require('../controllers/post.controller');
 const { authenticateJWT } = require('../middleware/auth');
 const checkDrivelink = require('../config/checkDrive'); 
+const authenticateToken = require('../middleware/auth');
 const router = express.Router();
 
 
-router.post('/createPost', createPostController);
-router.get('/team/:teamId', getPosts);
-router.put('/:id', editPostController);
-router.post('/isPublicDrive', async (req, res) => {
-    const url = req.body.url;
-  
-    console.log(url)
-    // Check if URL is provided
-    if (!url) {
-        return res.status(400).json({ error: 'URL is required.' });
-    }
+router.post('/createPost',authenticateToken, createPostController);
+router.get('/team/:teamId',authenticateToken, getPosts);
+router.put('/:id',authenticateToken, editPostController);
 
-    // Call the checkDrivelink function
-    const result = await checkDrivelink(url);
-    
-    // Send the result back to the client
-    return res.status(200).json(result);
-});
 router.get('/all', getAllPosts);
-router.post("/vote/:postId",increaseVote)
-router.post("/downvote/:postId",decreaseVote)
+
+router.post("/vote/:postId",authenticateToken,increaseVote)
+router.post("/downvote/:postId",authenticateToken,decreaseVote)
 
 module.exports = router;

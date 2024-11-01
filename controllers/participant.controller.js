@@ -8,10 +8,6 @@ const checkLink = require('../config/checkDrive');
 const {generateInvitationHTML,generatePartipantHTML,generateVoterHTML}=require('../templates/invitation');
 
 
-// Get posts for a participant
-
-// Submit a post for a participant
-
 exports.onboardedUser= async (req, res) => {
   
   try {
@@ -49,7 +45,6 @@ exports.onboardedUser= async (req, res) => {
 exports.onboardTeam = async (req, res) => {
   try {
    
-   console.log("TEAM ONBOARDING")
   
     const { id,teamName, teamMembers, teamLeader, branch, collegeName, posts,isParticipant } = await req.body;
     const team = await Team.findOne({ teamName });
@@ -153,12 +148,10 @@ exports.onboardTeam = async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 }
+
 exports.joinTeam = async (req, res) => {
   try {
-    console.log("JOIN TEAM")
-    console.log(req.body)
     const { id, teamId,branch,collegeName } = req.body;
-    console.log(id,teamId)
     const user = await User.findById(id);
     const team = await Team.findById(teamId);
 
@@ -178,7 +171,6 @@ exports.joinTeam = async (req, res) => {
     user.branch=branch;
     user.collegeName=collegeName;
     await user.save();
-    console.log(user)
 
     team.teamMembers.push(user._id);
     await team.save();

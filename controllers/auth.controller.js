@@ -73,9 +73,6 @@ exports.exchangeCode = async (req, res) => {
 
 exports.regenerateJWT=async (req, res) => {
   const { refreshToken } = req.body; 
-  console.log('\n\n\n')
-  console.log(refreshToken)
-  console.log('\n\n\n')
   if (!refreshToken) {
     return res.status(403).json({ message: 'Refresh token is required' });
   }
@@ -94,9 +91,6 @@ exports.regenerateJWT=async (req, res) => {
 
       const newAccessToken = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
-
-
-      // Send back the new access token
       res.status(200).json({ accessToken: newAccessToken });
     });
   } catch (error) {

@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 // Define the post schema
 const postSchema = new mongoose.Schema({
-  teamId: { // Add teamId to reference the Team model
+  teamId: { 
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Team',
   },
@@ -16,7 +16,8 @@ const postSchema = new mongoose.Schema({
   }, 
   url: { 
     type: String, 
-    required: true 
+    required: true,
+    unique:true
   }, 
   fileId:{
     type:String

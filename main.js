@@ -18,10 +18,6 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(passport.initialize());
 
-console.log(allowedOrigins)
-
-console.log('Allowed Origins:', allowedOrigins);
-
 const corsOptions = {
   origin: function (origin, callback) {
       // Allow requests with no origin (like mobile apps, curl requests)

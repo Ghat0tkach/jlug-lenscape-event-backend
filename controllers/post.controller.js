@@ -7,7 +7,6 @@ const checkLink = require('../config/checkDrive');
 
 
 async function createPost(postDetails) {
- console.log("POST DETAILS")
   const newPost = new Post({
     title: postDetails.title,
     url: postDetails.url,
@@ -19,18 +18,11 @@ async function createPost(postDetails) {
 
 
   try {
-
-
-
     await newPost.save();
-    console.log("POST DETAILS")
-
     // Update the associated team with the new post's ID
     await Team.findByIdAndUpdate(postDetails.teamId, {
       $push: { posts: newPost._id } // Add the post ID to the team's posts array
     });
-  console.log("adding here")
-
     return newPost;
   } catch (error) {
     console.error('Error creating post:', error);
@@ -45,18 +37,12 @@ exports.createPost=createPost
 exports.createPostController = async (req, res) => {
   try {
     const postDetails = req.body;
-    console.log("POST DETAILS")
-    console.log("\n\n\n\n\n\n")
-    console.log(postDetails)
-    console.log("\n\n\n\n\n\n")
     const result=await checkLink(postDetails.url)
 
     if(result.success==false){  
       return res.status(400).json({ message: result.message });
       
     }
-   
-    console.log(result)
     postDetails.fileId=result.data.fileId
     postDetails.type=result.data.mimeType;
 
